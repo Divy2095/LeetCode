@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int>> mergeArrays(vector<vector<int>>& nums1,
+                                    vector<vector<int>>& nums2) {
+        vector<vector<int>> temp;
+        vector<bool> found2(nums2.size(), false);
+        for (int i = 0; i < nums1.size(); i++) {
+            vector<int> row;
+            bool found1 = false;
+            for (int j = 0; j < nums2.size(); j++) {
+                if (nums1[i][0] == nums2[j][0]) {
+                    row = {nums1[i][0], nums1[i][1] + nums2[j][1]};
+                    found1 = true;
+                    found2[j] = true;
+                    break;
+                }
+            }
+            if (!found1)
+                temp.push_back(nums1[i]);
+            if (found1)
+                temp.push_back(row);
+        }
+        for (int j = 0; j < nums2.size(); j++) {
+            if (!found2[j]) {
+                temp.push_back(nums2[j]);
+            }
+        }
+        sort(temp.begin(), temp.end());
+        return temp;
+    }
+};
