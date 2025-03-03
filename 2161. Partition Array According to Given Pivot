@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> pivotArray(vector<int>& nums, int pivot) {
+        int size = nums.size();
+        vector<int> min,max,mid;
+        for(int i=0; i<size; i++){
+            if(nums[i] < pivot){
+                min.push_back(nums[i]);
+            }
+            else if(nums[i] > pivot){
+                max.push_back(nums[i]);
+            }
+            else{
+                mid.push_back(nums[i]);
+            }
+        }
+        min.insert(min.end() , mid.begin() , mid.end());
+        min.insert(min.end() , max.begin() , max.end());
+
+        return min;
+    }
+};
