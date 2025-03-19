@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int n = nums.size();
+        int operations = 0;
+        int flip = 0;  
+        queue<int> q;  
+        
+        for (int i = 0; i < n; i++) {
+            if (!q.empty() && q.front() == i - 3) {
+                q.pop();  
+                flip--;   
+            }
+
+            if ((nums[i] + flip) % 2 == 0) {  
+                if (i + 2 >= n) return -1;  
+                q.push(i);  
+                flip++;  
+                operations++;  
+            }
+        }
+        
+        return operations;
+    }
+};
