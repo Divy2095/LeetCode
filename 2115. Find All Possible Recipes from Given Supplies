@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
+        unordered_set<string> available(supplies.begin(), supplies.end()); 
+        queue<string> q;  
+        vector<string> result;
+
+        for (int i = 0; i < recipes.size(); i++) {
+            bool canMake = true;
+            for (string ingredient : ingredients[i]) { 
+                if (available.find(ingredient) == available.end()) {
+                    canMake = false;
+                    break;
+                }
+            }
+            if (canMake) {
+                q.push(recipes[i]);
+                result.push_back(recipes[i]);
+                available.insert(recipes[i]);
+            }
+        }
+        while (!q.empty()) {
+            string madeRecipe = q.front();
+            q.pop();
+            for (int i = 0; i < recipes.size(); i++) {
+                if (available.find(recipes[i]) != available.end())  
+                    continue;
+                bool canMake = true;
+                for (string ingredient : ingredients[i]) {
+                    if (available.find(ingredient) == available.end()) {
+                        canMake = false;
+                        break;
+                    }
+                }
+                if (canMake) {
+                    q.push(recipes[i]);
+                    result.push_back(recipes[i]);
+                    available.insert(recipes[i]);
+                }
+            }
+        }
+        return result;
+    }
+};
