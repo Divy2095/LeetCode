@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int countCompleteComponents(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> adj(n);  // Adjacency list
+        vector<bool> visited(n, false);  // Track visited nodes
+        int completeCount = 0;  // Count of complete components
+
+        // Step 1: Build the adjacency list
+        for (auto& edge : edges) {
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);
+        }
+
+        // Step 2: Find connected components using DFS
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                unordered_set<int> componentNodes;  // Store nodes in this component
+                int edgeCount = 0;  // Count edges in this component
+
+                // DFS Traversal
+                dfs(i, adj, visited, componentNodes, edgeCount);
+
+                // Step 3: Check if it's a complete component
+                int k = componentNodes.size();  // Number of nodes in the component
+                int expectedEdges = k * (k - 1) / 2;  // Required edges for a complete graph
+                
+                if (edgeCount / 2 == expectedEdges) {  // Divide by 2 since edges are counted twice
+                    completeCount++;
+                }
+            }
+        }
+
+        return completeCount;
+    }
+
+private:
+    void dfs(int node, vector<vector<int>>& adj, vector<bool>& visited, unordered_set<int>& componentNodes, int& edgeCount) {
+        visited[node] = true;
+        componentNodes.insert(node);
+
+        for (int neighbor : adj[node]) {
+            edgeCount++;  // Count edges (but it will be counted twice)
+            if (!visited[neighbor]) {
+                dfs(neighbor, adj, visited, componentNodes, edgeCount);
+            }
+        }
+    }
+};
