@@ -1,0 +1,14 @@
+class Solution {
+public:
+    char kthCharacter(int k) {
+        string word = "a";
+        while(word.length() < k) {
+            string temp = word;
+            for(int j=0; j<temp.length(); j++){
+                temp[j]++;
+            }
+            word = word.append(temp);
+        }
+        return word[k-1];
+    }
+};
